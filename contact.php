@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
  
     <!-- Site Metas -->
-	<title>Don Chucho | Inicio</title>  
+	<title>Don Chucho | Contacto</title>  
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -50,11 +50,11 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbars-rs-food">
 					<ul class="navbar-nav ml-auto">
-						<li class="nav-item active"><a class="nav-link" href="index.html">Inicio</a></li>
-						<li class="nav-item"><a class="nav-link" href="index.html">Menu</a></li>
+						<li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+						<li class="nav-item"><a class="nav-link" href="index.html#menu-slash">Menu</a></li>
 						<li class="nav-item"><a class="nav-link" href="about.html">Nosotros</a></li>
 						<li class="nav-item"><a class="nav-link" href="menu.php">A Domicilio</a></li>
-						<li class="nav-item"><a class="nav-link" href="contact.php">Contacto</a></li>
+						<li class="nav-item active"><a class="nav-link" href="contact.php">Contacto</a></li>
 					</ul>
 				</div>
 			</div>
@@ -67,7 +67,7 @@
 		<div class="container text-center">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1>Contact</h1>
+					<h1>Contacto</h1>
 				</div>
 			</div>
 		</div>
@@ -110,19 +110,6 @@
 									<div class="help-block with-errors"></div>
 								</div>                                 
 							</div>
-							<!-- <div class="col-md-12">
-								<div class="form-group">
-									<select class="custom-select d-block form-control" id="guest" required data-error="Please Select Person">
-									  <option disabled selected>Please Select Person*</option>
-									  <option value="1">1</option>
-									  <option value="2">2</option>
-									  <option value="3">3</option>
-									  <option value="4">4</option>
-									  <option value="5">5</option>
-									</select>
-									<div class="help-block with-errors"></div>
-								</div> 
-							</div> -->
 							<div class="col-md-12">
 								<div class="form-group"> 
 									<textarea class="form-control" id="message" name="message" placeholder="Tu mensaje" rows="4" data-error="Ingresa un mensaje" required></textarea>
@@ -211,10 +198,10 @@
 				</div>
 				<div class="col-lg-3 col-md-6">
 					<h3>Horarios de Apertura</h3>
-					<p><span class="text-color">Lunes: </span>Cerrado</p>
-					<p><span class="text-color">Mar-Mie :</span> 7:Am - 10PM</p>
-					<p><span class="text-color">Jue-Vie :</span> 7:Am - 10PM</p>
-					<p><span class="text-color">Sab-Dom :</span> 9:PM - 10PM</p>
+					<p><span class="text-color">Lun-Dom: </span>Cerrado</p>
+					<p><span class="text-color">Mar-Mie :</span> 8:00 AM - 6:00 PM</p>
+					<p><span class="text-color">Jue-Vie :</span> 8:00 AM - 6:00 PM</p>
+					<p><span class="text-color">Sabado :</span> 8:00 AM - 6:00 PM</p>
 				</div>
 			</div>
 		</div>

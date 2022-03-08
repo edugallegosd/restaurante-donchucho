@@ -12,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
  
      <!-- Site Metas -->
-	<title>Don Chucho | Inicio</title>    
+	<title>Don Chucho | A Domicilio</title>    
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="keywords" content="">
     <meta name="description" content="">
@@ -30,12 +30,6 @@
     <link rel="stylesheet" href="css/responsive.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/custom.css">
-
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
 </head>
 
 <body>
@@ -51,10 +45,10 @@
 				</button>
 				<div class="collapse navbar-collapse" id="navbars-rs-food">
 					<ul class="navbar-nav ml-auto">
-						<li class="nav-item active"><a class="nav-link" href="index.html">Inicio</a></li>
-						<li class="nav-item"><a class="nav-link" href="#menu-slash">Menu</a></li>
+						<li class="nav-item"><a class="nav-link" href="index.html">Inicio</a></li>
+						<li class="nav-item"><a class="nav-link" href="index.html#menu-slash">Menu</a></li>
 						<li class="nav-item"><a class="nav-link" href="about.html">Nosotros</a></li>
-						<li class="nav-item"><a class="nav-link" href="menu.php">A Domicilio</a></li>
+						<li class="nav-item active"><a class="nav-link" href="menu.php">A Domicilio</a></li>
 						<li class="nav-item"><a class="nav-link" href="contact.php">Contacto</a></li>
 					</ul>
 				</div>
@@ -75,9 +69,6 @@
 	</div>
 	<!-- End All Pages -->
 
-	
-			
-	
 	<!-- Start Menu -->
 	<div class="menu-box">
 		<div class="container">
@@ -105,7 +96,7 @@
 							<!-- Todos -->
 							<div class="row">
 								<?php
-									$sql = "SELECT * FROM productos WHERE tipo=1";
+									$sql = "SELECT * FROM productos WHERE tipo=1 || tipo=4";
 									$re = mysqli_query($conexion, $sql)or die(mysqli_error());
 									while ($f = mysqli_fetch_array($re)) {
 								?>
@@ -114,9 +105,8 @@
 										<img src="<?php echo $f['imagen'];?>" class="img-fluid" alt="Image">
 										<div class="why-text">
 											<h4><?php echo $f['nombre'];?></h4>
-											<p><?php echo $f['descripcion'];?></p>											
+											<p><?php echo $f['descripcion'];?></p>							
 											<h5>$ <?php echo $f['precio'];?> | <a href="pageCarrito.php?id=<?php echo $f['id'];?>">Añadir al Carrito</a></h5>
-											
 										</div>
 									</div>
 								</div>
@@ -141,7 +131,7 @@
 											<div class="why-text">
 												<h4><?php echo $f['nombre'];?></h4>
 												<p><?php echo $f['descripcion'];?></p>
-												<h5>$ <?php echo $f['precio'];?> | <a href="">Añadir al Carrito</a></h5>
+												<h5>$ <?php echo $f['precio'];?> | <a href="pageCarrito.php?id=<?php echo $f['id'];?>">Añadir al Carrito</a></h5>
 											</div>
 										</div>
 									</div>
@@ -166,7 +156,7 @@
 										<div class="why-text">
 											<h4><?php echo $f['nombre'];?></h4>
 											<p><?php echo $f['descripcion'];?></p>
-											<h5>$ <?php echo $f['precio'];?> | <a href="">Añadir al Carrito</a></h5>
+											<h5>$ <?php echo $f['precio'];?> | <a href="pageCarrito.php?id=<?php echo $f['id'];?>">Añadir al Carrito</a></h5>
 										</div>
 									</div>
 								</div>
@@ -324,10 +314,10 @@
 				</div>
 				<div class="col-lg-3 col-md-6">
 					<h3>Horarios de Apertura</h3>
-					<p><span class="text-color">Lunes: </span>Cerrado</p>
-					<p><span class="text-color">Mar-Mie :</span> 7:Am - 10PM</p>
-					<p><span class="text-color">Jue-Vie :</span> 7:Am - 10PM</p>
-					<p><span class="text-color">Sab-Dom :</span> 9:PM - 10PM</p>
+					<p><span class="text-color">Lun-Dom: </span>Cerrado</p>
+					<p><span class="text-color">Mar-Mie :</span> 8:00 AM - 6:00 PM</p>
+					<p><span class="text-color">Jue-Vie :</span> 8:00 AM - 6:00 PM</p>
+					<p><span class="text-color">Sabado :</span> 8:00 AM - 6:00 PM</p>
 				</div>
 			</div>
 		</div>
@@ -359,5 +349,6 @@
 	<script src="js/form-validator.min.js"></script>
     <script src="js/contact-form-script.js"></script>
     <script src="js/custom.js"></script>
+	<script src="https://kit.fontawesome.com/c7d7062c45.js" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,73 +1,35 @@
 <?php
     session_start();
+    include 'conexion.php';
 
-	include 'php/conexion.php';  
-
-    if (isset($_SESSION['carrito'])) {
-        $arreglo = $_SESSION['carrito'];
-        $encontro = false;
-        $numero = 0;
-
-        for ($i = 0; $i < count($arreglo); $i++) {
-            if ($arreglo[$i]['Id'] == $_GET['id']) {
-                $encontro = true;
-                $numero = $i;
-            }
-        }
-
-        if ($encontro == true) {
-            $arreglo[$numero]['Cantidad'] = $arreglo[$numero]['Cantidad'] + 1;
-            $_SESSION['carrito'] = $arreglo;
-        }else{
-            $nombre = "";
-            $precio = 0;
-            $imagen = "";
-            $tipo = 0;
-            $sql = "SELECT * FROM productos WHERE id=".$_GET['id'];
-            $ejecuta_sentencia = mysqli_query($conexion, $sql);
-            while ($f = mysqli_fetch_array($ejecuta_sentencia)) {
-                $nombre = $f['nombre'];
-                $precio = $f['precio'];
-                $imagen = $f['imagen'];
-                $tipo = $f['tipo'];
-            }
-
-            $datosNuevos = array('Id'=>$_GET['id'],
-                               'Nombre'=>$nombre,
-                               'Precio'=>$precio,
-                               'Imagen'=>$imagen,
-                               'Tipo'=>$tipo,
-                               'Cantidad'=> 1
-            );
-
-            array_push($arreglo, $datosNuevos);
-            $_SESSION['carrito'] = $arreglo;
-        }
+    $arreglo=$_SESSION['carrito'];
+	$numeroventa=0;
+	$sql = "SELECT * FROM compras ORDER BY numeroventa DESC limit 1";
+    $ejecuta_sentencia = mysqli_query($conexion, $sql);
+    while($f=mysqli_fetch_array($ejecuta_sentencia)) {
+    	$numeroventa=$f['numeroventa'];
+    }
+    if($numeroventa==0) {
+    	$numeroventa=1;
     }else{
-        if (isset($_GET['id'])) {
-            $nombre = "";
-            $precio = 0;
-            $imagen = "";
-            $tipo = 0;
-            $sql = "SELECT * FROM productos WHERE id=".$_GET['id'];
-            $ejecuta_sentencia = mysqli_query($conexion, $sql);
-            while ($f = mysqli_fetch_array($ejecuta_sentencia)) {
-                $nombre = $f['nombre'];
-                $precio = $f['precio'];
-                $imagen = $f['imagen'];
-                $tipo = $f['tipo'];
-            }
+    	$numeroventa=$numeroventa+1;
+    }
+    for($i=0; $i<count($arreglo); $i++) {
+    $insertar =	"INSERT INTO compras(numeroventa, nombre, imagen, precio, cantidad, subtotal) VALUES (
+		".$numeroventa.",
+		'".$arreglo[$i]['Nombre']."',
+		'".$arreglo[$i]['Imagen']."',
+		'".$arreglo[$i]['Precio']."',
+		'".$arreglo[$i]['Cantidad']."',
+		'".($arreglo[$i]['Precio']*$arreglo[$i]['Cantidad'])."'
+    	)";
 
-            $arreglo[] = array('Id'=>$_GET['id'],
-                               'Nombre'=>$nombre,
-                               'Precio'=>$precio,
-                               'Imagen'=>$imagen,
-                               'Tipo'=>$tipo,
-                               'Cantidad'=> 1
-            );
-
-            $_SESSION['carrito'] = $arreglo;
-        }
+    	$resultado = mysqli_query($conexion, $insertar);
+		if (!$resultado) {
+			header("location:Errorpedido.html");
+		} else {
+			
+		}
     }
 ?>
 
@@ -92,13 +54,13 @@
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">    
+    <link rel="stylesheet" href="../css/bootstrap.min.css">    
 	<!-- Site CSS -->
-    <link rel="stylesheet" href="css/style.css">    
+    <link rel="stylesheet" href="../css/style.css">    
     <!-- Responsive CSS -->
-    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="../css/responsive.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/custom.css">
+    <link rel="stylesheet" href="../css/custom.css">
 
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -113,7 +75,7 @@
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<div class="container">
 				<a class="navbar-brand" href="index.html">
-						<img src="images/logo.png" class="logo" />
+						<img src="../images/logo.png" class="logo" />
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-rs-food" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
 				  <span class="navbar-toggler-icon"></span>
@@ -121,10 +83,10 @@
 				<div class="collapse navbar-collapse" id="navbars-rs-food">
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item active"><a class="nav-link" href="index.html">Inicio</a></li>
-						<li class="nav-item"><a class="nav-link" href="index.html#menu-slash">Menu</a></li>
-						<li class="nav-item"><a class="nav-link" href="about.html">Nosotros</a></li>
-						<li class="nav-item"><a class="nav-link" href="menu.php">A Domicilio</a></li>
-						<li class="nav-item"><a class="nav-link" href="contact.php">Contacto</a></li>
+						<li class="nav-item"><a class="nav-link" href="../index.html#menu-slash">Menu</a></li>
+						<li class="nav-item"><a class="nav-link" href="../about.html">Nosotros</a></li>
+						<li class="nav-item"><a class="nav-link" href="../menu.php">A Domicilio</a></li>
+						<li class="nav-item"><a class="nav-link" href="../contact.php">Contacto</a></li>
 					</ul>
 				</div>
 			</div>
@@ -147,55 +109,71 @@
 	<!-- Start Menu -->
 	<div class="menu-box">
 		<div class="container">
-			<div class="row align-items-star">
-			<?php 
-			$total = 0;
-                if (isset($_SESSION['carrito'])) {
-                    $datos = $_SESSION['carrito'];
-                    $total = 0;
-
-                    for ($i = 0; $i < count($datos); $i++) {
-            ?>
-					<div class="card" style="width: 18rem;">
-						<img src="<?php echo $datos[$i]['Imagen']; ?>" class="card-img-top" alt="...">
-						<div class="card-body">
-							<center>
-							<h5 class="card-title"><?php echo $datos[$i]['Nombre'];?></h5>
-							<p class="card-text">$ <?php echo $datos[$i]['Precio'];?></p>
-							<p class="card-text">Subtotal: $ <?php echo $datos[$i]['Precio'] * $datos[$i]['Cantidad'];?></p>
-							<span>Cantidad:
-								<input type="text" value="<?php echo $datos[$i]['Cantidad'];?>" data-precio="<?php echo $datos[$i]['Precio'];?>" data-id="<?php echo $datos[$i]['Id'];?>" class="cantidad">
-							</span>
-							</center>
-						</div>
+        <div class="row">
+				<div class="col-lg-12">
+					<div class="heading-title text-center">
+						<h2>Pedido a Domicilio</h2>
+						<p>¡Ingresa tus datos para llevarte tu pedido lo más pronto posible!</p>
 					</div>
-            <?php
-                    $total = ($datos[$i]['Cantidad'] * $datos[$i]['Precio']) + $total;
-					
-
-					
-                    }
-
-                }else{
-                    echo '<center><h2>El carrito de compras está vacio.</h2></center>';
-                }
-
-				
-
-				
-            ?>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<form method="post" action="pedidos.php">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<input type="text" class="form-control" id="name" name="nombre" placeholder="Ingresa tu nombre" required data-error="Ingresa tu nombre">
+									<div class="help-block with-errors"></div>
+								</div>                                 
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<input type="text" placeholder="Ingresa tu apellido" id="email" class="form-control" name="apellido" required data-error="Ingreasa tu apellido">
+									<div class="help-block with-errors"></div>
+								</div> 
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<input type="text" class="form-control" id="event" name="calle" placeholder="Ingresa la calle de tu direccion" required data-error="Ingresa la calle de tu direccion">
+									<div class="help-block with-errors"></div>
+								</div>                                 
+							</div>
+							<div class="col-md-12">
+								<div class="form-group"> 
+                                <input type="text" class="form-control" id="event" name="colonia" placeholder="Ingresa la colonia de tu direccion" required data-error="Ingresa la colonia de tu direccion">
+									<div class="help-block with-errors"></div>
+								</div>
+							</div>
+                            <div class="col-md-12">
+								<div class="form-group">
+									<input type="text" class="form-control" id="event" name="telefono" placeholder="Ingresa tu numero de telefono" required data-error="Ingresa tu numero de telefono">
+									<div class="help-block with-errors"></div>
+								</div>                         
+							</div>
+                            <div class="col-md-12">
+								<div class="form-group">
+									<input type="text" class="form-control" id="event" name="referencias" placeholder="Ingresa las referencias" required data-error="Ingresa las referencias">
+									<div class="help-block with-errors"></div>
+								</div>                    
+							</div>
+                            <div class="col-md-12">
+								<div class="form-group"> 
+									<textarea class="form-control" id="message" name="numeroventa" placeholder="Tu mensaje" rows="4" data-error="Ingresa un mensaje" required><?php echo "$numeroventa"; ?></textarea>
+									<div class="help-block with-errors"></div>
+								</div>
+								<div class="submit-button text-center">
+									<button type="submit" class="btn btn-common">Enviar</button>
+									<div id="msgSubmit" class="h3 text-center hidden"></div> 
+									<div class="clearfix"></div> 
+								</div>
+							</div>
+						</div>            
+					</form>
+				</div>
+			</div>
 		</div>
 	</div>
-	</div>
-
-	<?php
-		echo '<center><h2 id="total">Total: '.$total.'</h2></center>';
-		
-		if ($total != 0) {
-			echo '<center><a href="php/compras.php" class="btn btn-common mb-2 aceptar">Comprar</a></center>';
-		}
-	?>
-
 	<!-- End Menu -->
 	
 	<!-- Start Contact info -->
@@ -291,17 +269,17 @@
 	<a href="#" id="back-to-top" title="Back to top" style="display: none;"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></a>
 
 	<!-- ALL JS FILES -->
-	<script src="js/jquery-3.2.1.min.js"></script>
-	<script src="js/popper.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="js/problema.js"></script>
+	<script src="../js/jquery-3.2.1.min.js"></script>
+	<script src="../js/popper.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../js/problema.js"></script>
     <!-- ALL PLUGINS -->
-	<script src="js/jquery.superslides.min.js"></script>
-	<script src="js/images-loded.min.js"></script>
-	<script src="js/isotope.min.js"></script>
-	<script src="js/baguetteBox.min.js"></script>
-	<script src="js/form-validator.min.js"></script>
-    <script src="js/contact-form-script.js"></script>
-    <script src="js/custom.js"></script>
+	<script src="../js/jquery.superslides.min.js"></script>
+	<script src="../js/images-loded.min.js"></script>
+	<script src="../js/isotope.min.js"></script>
+	<script src="../js/baguetteBox.min.js"></script>
+	<script src="../js/form-validator.min.js"></script>
+    <script src="../js/contact-form-script.js"></script>
+    <script src="../js/custom.js"></script>
 </body>
 </html>
